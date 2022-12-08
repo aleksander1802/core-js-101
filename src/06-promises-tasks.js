@@ -79,9 +79,6 @@ function getFastestPromise(array) {
   return Promise.race(array);
 }
 
-const arr = ['ffff:', 'fgfgf'];
-console.log(...arr);
-
 /**
  * Return Promise object that should be resolved with value that is
  * a result of action with values of all the promises that exists in array.
