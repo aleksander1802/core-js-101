@@ -27,8 +27,22 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  let result = num;
+
+  if (!(num % 3)) {
+    result = 'Fizz';
+  }
+
+  if (!(num % 5)) {
+    result = 'Buzz';
+  }
+
+  if (!(num % 3) && !(num % 5)) {
+    result = 'FizzBuzz';
+  }
+
+  return result;
 }
 
 
@@ -43,10 +57,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  return n === 0 ? 1 : n * getFactorial(n - 1);
 }
-
 
 /**
  * Returns the sum of integer numbers between n1 and n2 (inclusive).
@@ -60,10 +73,23 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
-}
+function getSumBetweenNumbers(n1, n2) {
+  const result = [n1, n2].reduce((acc, curr) => {
+    if (acc + 1 === curr) {
+      const res = acc + curr;
+      return res;
+    }
+    let sum = 0;
+    let f = acc;
+    while (f !== curr + 1) {
+      sum += f;
+      f += 1;
+    }
+    return sum;
+  });
 
+  return result;
+}
 
 /**
  * Returns true, if a triangle can be built with the specified sides a, b, c
@@ -80,8 +106,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return a + b > c && a + c > b && b + c > a;
 }
 
 
@@ -148,8 +174,27 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const circleX = circle.center.x;
+  const circleY = circle.center.y;
+  const circleRadius = circle.radius;
+
+  const currentX = point.x;
+  const currentY = point.y;
+
+  const isInside = (circlex, circley, rad, x, y) => {
+    let result;
+    if ((x - circlex) * (x - circlex)
+      + (y - circley) * (y - circley) < rad * rad) {
+      result = true;
+    }
+    if ((x - circlex) * (x - circlex)
+      + (y - circley) * (y - circley) >= rad * rad) {
+      result = false;
+    }
+    return result;
+  };
+  return isInside(circleX, circleY, circleRadius, currentX, currentY);
 }
 
 
@@ -164,10 +209,10 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const array = [...str].filter((item, i, arr) => arr.indexOf(item) === arr.lastIndexOf(item));
+  return array ? array[0] : null;
 }
-
 
 /**
  * Returns the string representation of math interval,
@@ -191,10 +236,11 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+  return `${start}${[a, b].sort().join(', ')}${end}`;
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -208,10 +254,9 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split(' ').map((item) => [...item].reverse().join('')).reverse().join(' ');
 }
-
 
 /**
  * Reverse the specified integer number (put all digits in reverse order)
@@ -225,8 +270,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +[...String(num)].reverse().join('');
 }
 
 
@@ -268,10 +313,10 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const copy = [...String(num)].reduce((a, b) => +a + +b);
+  return String(copy).length === 1 ? copy : getDigitalRoot(copy);
 }
-
 
 /**
  * Returns true if the specified string has the balanced brackets and false otherwise.
@@ -294,10 +339,31 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
-}
+function isBracketsBalanced(str) {
+  const stack = [];
 
+  const valid = [']', ')', '}', '>'];
+
+  const brackets = {
+    ']': '[',
+    ')': '(',
+    '}': '{',
+    '>': '<',
+  };
+
+  const validBrackets = (bracket) => valid.indexOf(bracket) > -1;
+
+  for (let i = 0; i < str.length; i += 1) {
+    const current = str[i];
+
+    if (validBrackets(current)) {
+      if (brackets[current] !== stack.pop()) return false;
+    } else {
+      stack.push(current);
+    }
+  }
+  return !stack.length;
+}
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
@@ -319,8 +385,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -340,7 +406,6 @@ function getCommonDirectoryPath(/* pathes */) {
   throw new Error('Not implemented');
 }
 
-
 /**
  * Returns the product of two specified matrixes.
  * See details: https://en.wikipedia.org/wiki/Matrix_multiplication
@@ -359,8 +424,21 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const array1 = [];
+  array1.length = m1.length;
+
+  for (let i = 0; i < array1.length; i += 1) {
+    array1[i] = new Array(m2[i].length);
+    for (let j = 0; j < m1.length; j += 1) {
+      array1[i][j] = 0;
+      for (let k = 0; k < m2.length; k += 1) {
+        array1[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return array1;
 }
 
 

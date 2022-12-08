@@ -23,10 +23,7 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
-}
-
+const getComposition = (f, g) => (value) => f(g(value));
 
 /**
  * Returns the math power function with the specified exponent
@@ -44,8 +41,8 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return (value) => value ** exponent;
 }
 
 
